@@ -83,6 +83,7 @@ celerybeat-schedule
 .venv
 env/
 venv/
+venv
 ENV/
 
 # Spyder project settings
@@ -98,9 +99,10 @@ ENV/
 # mypy
 .mypy_cache/
 
-# praw
-praw.ini
+# config
+config.ini
 
 # application specific
 images/
 posted_links.txt
+bot.session

@@ -15,4 +15,4 @@ class TelegramNotifier:
 
     def send_messages(self, url, preview_url, caption):
         self.LOGGER.debug("Sending "+caption+" with url "+url)
-       # self.bot.send_photo(chat_id=self.chat_id, photo=preview_url, caption=caption + " - "+url)
+        self.bot.send_photo(chat_id=self.chat_id, photo=preview_url, caption=caption + " - "+url)
