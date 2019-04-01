@@ -330,8 +330,6 @@ USER_PROFILE = REDDIT.redditor(CONFIG.get_redditor())
 SUBREDDIT = REDDIT.subreddit(CONFIG.get_subreddit())
 FIRST_ITER = True
 
-flair_options = update_flair()
-
 CONTEXT_TEMPLATE = '[Context for the post: {:s}]({:s})\n\nAlso, ' + \
                    'if you like SrGrafo and want more information, check out his profile ' + \
                    'here /u/SrGrafo\n\nIf you have any suggestions or need to get a hold of me, ' + \
@@ -354,18 +352,25 @@ check_limit = 30
 POSTED_IMAGES = []
 LOGGER.info('entering loop')
 while True:
-    # Checks the flair to make sure all our flair templates are valid
-    flair_options = update_flair()
+    try:
+        # Checks the flair to make sure all our flair templates are valid
+        flair_options = update_flair()
 
-    update_post_images()
-    update_comment_images()
+        update_post_images()
+        update_comment_images()
 
-    # post oldest first, then newest
-    iter_list = sorted(IMG_LIST, key=lambda post: post['created'])
+        # post oldest first, then newest
+        iter_list = sorted(IMG_LIST, key=lambda post: post['created'])
 
-    LOGGER.info('start posting')
-    post_all_images()
+        LOGGER.info('start posting')
+        post_all_images()
 
-    LOGGER.info('finished posting current batch. Wait 1 minute and try again')
-    time.sleep(60)
-    FIRST_ITER = False
+        LOGGER.info('finished posting current batch. Wait 1 minute and try again')
+        time.sleep(60)
+
+        FIRST_ITER = False
+
+    except prawcore.exceptions.RequestException as err:
+        LOGGER.error("It seems the internet went out. Waiting for 5 minutes")
+        LOGGER.error(err)
+        time.sleep(5 * 60)  # try again in 5 minutes
